@@ -1,0 +1,73 @@
+#container {
+    height: 500px;
+    width: 500px;
+    background:  rgb(187,173,160);
+    margin: 0 auto;
+    position: relative;
+}
+#start {
+    height: 500px;
+    width: 500px;
+    display: block;
+    font-size: 40px;
+    text-align: center;
+    line-height: 500px;
+    color: #2EA9DF;
+    background-color: #E79460;
+}
+#container div.lattice{
+    width: 100px;
+    height: 40px;
+    text-align: center;
+    font-size: 70px;
+    line-height: 40px;
+    margin: 20px 0 0 20px;
+    padding: 30px 0;
+    float: left;
+}
+#container div.lattice0{
+
+    background-color: rgb(204,192,179);
+}
+#container div.lattice2{
+    color: #64363C;
+    background-color:rgb(238,228,218) ;
+}
+#container div.lattice4{
+    color:#64363C;
+    background-color: #ede0c8;
+}
+#container div.lattice8{
+    color: #f9f6f2;
+    background-color:#f2b179 ;
+}
+#container div.lattice16{
+    color:#f9f6f2;
+    background-color:#f59563 ;
+}
+#container div.lattice32{
+    color:#f9f6f2;
+    background-color:#f67c5f ;
+}
+#container div.lattice64{
+    color: #f9f6f2;
+    background: #f65e3b;
+}
+#container div.lattice128{
+    color: #f9f6f2;
+    background: #edcf72;
+}
+#container div.lattice256{
+    color: #f9f6f2;
+    background: #edcc61;
+}
+#container div.lattice512{
+    color: #f9f6f2;
+    background: #edc850;
+}#container div.lattice1024{
+    color: #f9f6f2;
+   background: #edc53f;
+}#container div.lattice2048{
+    color: #f9f6f2;
+    background: #edc22e;
+}
