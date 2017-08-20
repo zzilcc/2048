@@ -4,6 +4,9 @@
     background:  rgb(187,173,160);
     margin: 0 auto;
     position: relative;
+    border:2px solid;
+    border-radius:25px;
+    box-shadow: 10px 10px 5px #888888;
 }
 #start {
     height: 500px;
@@ -14,6 +17,9 @@
     line-height: 500px;
     color: #2EA9DF;
     background-color: #E79460;
+    border:2px solid;
+    border-radius:25px;
+    box-shadow: 10px 10px 5px #888888;
 }
 #container div.lattice{
     width: 100px;
@@ -24,6 +30,9 @@
     margin: 20px 0 0 20px;
     padding: 30px 0;
     float: left;
+    border:2px solid;
+    border-radius:25px;
+    box-shadow: 5px 5px 5px #888888;
 }
 #container div.lattice0{
 
@@ -54,20 +63,25 @@
     background: #f65e3b;
 }
 #container div.lattice128{
+    font-size: 50px;
     color: #f9f6f2;
     background: #edcf72;
 }
 #container div.lattice256{
+    font-size: 50px;
     color: #f9f6f2;
     background: #edcc61;
 }
 #container div.lattice512{
+    font-size: 50px;
     color: #f9f6f2;
     background: #edc850;
 }#container div.lattice1024{
+    font-size: 40px;
     color: #f9f6f2;
    background: #edc53f;
 }#container div.lattice2048{
+    font-size: 30px;
     color: #f9f6f2;
     background: #edc22e;
 }

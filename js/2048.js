@@ -4,6 +4,7 @@
 var game2048 = function(container){
     this.container = container;
     this.lattices = new Array(16);
+    this.copyLattices = new Array(16);
 }
 game2048.prototype = {
     init:  function(){
@@ -37,11 +38,13 @@ game2048.prototype = {
         this.setValue(selectLattices,Math.random()>0.2?2:4);
     },
     move: function(keyNum){
-        console.log("move");
+        for(var i=0,len=this.lattices.length;i<len;i++){
+            this.copyLattices[i]=this.lattices[i];
+            // console.log("copyLattices.value[i]="+this.copyLattices[i].getAttribute("value"));
+        }
         switch (keyNum) {
             case 38:    //上箭头
                 for(var i=0;i<4;i++){
-                    console.log("i="+i);
                     if(this.lattices[i].getAttribute("value") == 0){
                         if(this.lattices[i+4].getAttribute("value") == 0){
                             if(this.lattices[i+8].getAttribute("value") == 0){
@@ -50,6 +53,7 @@ game2048.prototype = {
                             else {
                                 if(this.lattices[i+8].getAttribute("value") == this.lattices[i+12].getAttribute("value")){
                                     this.setValue(this.lattices[i], 2*this.lattices[i+8].getAttribute("value"));
+                                }else {
                                     this.setValue(this.lattices[i], this.lattices[i+8].getAttribute("value"));
                                     this.setValue(this.lattices[i+4], this.lattices[i+12].getAttribute("value"));
                                 }
@@ -69,7 +73,6 @@ game2048.prototype = {
                                         this.setValue(this.lattices[i], this.lattices[i+4].getAttribute("value"));
                                         this.setValue(this.lattices[i+4],this.lattices[i+12].getAttribute("value"));
                                     }
-                                    this.setValue(this.lattices[i+8], 0);
                                 }else{
                                     this.setValue(this.lattices[i],this.lattices[i+4].getAttribute("value"));
                                     if(this.lattices[i+8].getAttribute("value") == this.lattices[i+12].getAttribute("value")){
@@ -84,7 +87,6 @@ game2048.prototype = {
                         }
                         this.setValue(this.lattices[i+12],0);
                     }else {
-
                         if(this.lattices[i+4].getAttribute("value") == 0){
                             if(this.lattices[i+8].getAttribute("value") == 0){
                                 if(this.lattices[i].getAttribute("value") == this.lattices[i+12].getAttribute("value")){
@@ -96,10 +98,11 @@ game2048.prototype = {
                                 if(this.lattices[i].getAttribute("value") == this.lattices[i+8].getAttribute("value")){
                                     this.setValue(this.lattices[i], 2*this.lattices[i].getAttribute("value"));
                                     this.setValue(this.lattices[i+4], this.lattices[i+12].getAttribute("value"));
+                                    this.setValue(this.lattices[i+8], 0);
                                 }else {
                                     if(this.lattices[i+8].getAttribute("value") == this.lattices[i+12].getAttribute("value")){
                                         this.setValue(this.lattices[i+4], 2*this.lattices[i+8].getAttribute("value"));
-                                        this.setValue(this.lattices[i+8], 0);
+                                        this.setValue(this.lattices[i+8],0);
                                     }else {
                                         this.setValue(this.lattices[i+4], this.lattices[i+8].getAttribute("value"));
                                         this.setValue(this.lattices[i+8], this.lattices[i+12].getAttribute("value"));
@@ -115,10 +118,15 @@ game2048.prototype = {
                                     this.setValue(this.lattices[i+4] ,2*this.lattices[i+8].getAttribute("value"));
                                     this.setValue(this.lattices[i+8], 0);
                                 }else {
-                                    this.setValue(this.lattices[i+4], this.lattices[i+8].getAttribute("value"));
-                                    this.setValue(this.lattices[i+8], this.lattices[i+12].getAttribute("value"));
+                                    if(this.lattices[i+8].getAttribute("value") == 0){
+                                        this.setValue(this.lattices[i+4], this.lattices[i+12].getAttribute("value"));
+                                    }else{
+                                        this.setValue(this.lattices[i+4], this.lattices[i+8].getAttribute("value"));
+                                        this.setValue(this.lattices[i+8], this.lattices[i+12].getAttribute("value"));
+                                    }
+
                                 }
-                                this.setValue(this.lattices[i+8], 0);
+                                this.setValue(this.lattices[i+12], 0);
                             }else {
                                 if(this.lattices[i+8].getAttribute("value") == 0){
                                     if(this.lattices[i+4].getAttribute("value") == this.lattices[i+12].getAttribute("value")){
@@ -145,16 +153,16 @@ game2048.prototype = {
                 }
                 break;
             case 40:    //下箭头
-                for(var i=12;i<15;i++){
+                for(var i=12;i<16;i++){
                     if(this.lattices[i].getAttribute("value") == 0){
                         if(this.lattices[i-4].getAttribute("value") == 0){
                             if(this.lattices[i-8].getAttribute("value") == 0){
-                                this.setValue(this.lattices[i], this.lattices[i-12].getAttribute("value"));
+                                this.setValue(this.lattices[i], this.lattices[i-12].getAttribute("value")) ;
                             }
                             else {
                                 if(this.lattices[i-8].getAttribute("value") == this.lattices[i-12].getAttribute("value")){
                                     this.setValue(this.lattices[i], 2*this.lattices[i-8].getAttribute("value"));
-                                }else{
+                                }else {
                                     this.setValue(this.lattices[i], this.lattices[i-8].getAttribute("value"));
                                     this.setValue(this.lattices[i-4], this.lattices[i-12].getAttribute("value"));
                                 }
@@ -162,44 +170,44 @@ game2048.prototype = {
                             }
                         }else {
                             if(this.lattices[i-4].getAttribute("value") == this.lattices[i-8].getAttribute("value")){
-                                this.setValue(this.lattices[i], 2*this.lattices[i-4].getAttribute("value"));
-                                this.setValue(this.lattices[i-4], this.lattices[i-12].getAttribute("value"));
+                                this.setValue(this.lattices[i],2*this.lattices[i-4].getAttribute("value"));
+                                this.setValue(this.lattices[i-4],this.lattices[i-12].getAttribute("value"));
                                 this.setValue(this.lattices[i-8], 0);
                             }else{
                                 if(this.lattices[i-8].getAttribute("value") == 0){
                                     if(this.lattices[i-4].getAttribute("value") == this.lattices[i-12].getAttribute("value")){
-                                        this.setValue(this.lattices[i], 2*this.lattices[i-4].getAttribute("value"));
+                                        this.setValue(this.lattices[i],  2*this.lattices[i-4].getAttribute("value"));
                                         this.setValue(this.lattices[i-4], 0);
                                     }else{
                                         this.setValue(this.lattices[i], this.lattices[i-4].getAttribute("value"));
                                         this.setValue(this.lattices[i-4],this.lattices[i-12].getAttribute("value"));
                                     }
-                                    this.setValue(this.lattices[i-8],0);
                                 }else{
-                                    this.setValue(this.lattices[i], this.lattices[i-4].getAttribute("value"));
+                                    this.setValue(this.lattices[i],this.lattices[i-4].getAttribute("value"));
                                     if(this.lattices[i-8].getAttribute("value") == this.lattices[i-12].getAttribute("value")){
-                                        this.setValue(this.lattices[i-4], 2*this.lattices[i-12].getAttribute("value"));
+                                        this.setValue(this.lattices[i-4] , 2*this.lattices[i-12].getAttribute("value"));
                                         this.setValue(this.lattices[i-8], 0);
                                     }else {
-                                        this.setValue(this.lattices[i-4], this.lattices[i-8].getAttribute("value"));
-                                        this.setValue(this.lattices[i-8],this.lattices[i-12].getAttribute("value"));
+                                        this.setValue(this.lattices[i-4],this.lattices[i-8].getAttribute("value"));
+                                        this.setValue(this.lattices[i-8] , this.lattices[i-12].getAttribute("value"));
                                     }
                                 }
                             }
                         }
-                        this.setValue(this.lattices[i-12], 0);
+                        this.setValue(this.lattices[i-12],0);
                     }else {
                         if(this.lattices[i-4].getAttribute("value") == 0){
                             if(this.lattices[i-8].getAttribute("value") == 0){
                                 if(this.lattices[i].getAttribute("value") == this.lattices[i-12].getAttribute("value")){
-                                    this.setValue(this.lattices[i], 2*this.lattices[i].getAttribute("value"));
+                                    this.setValue(this.lattices[i],2*this.lattices[i].getAttribute("value"));
                                 }else{
                                     this.setValue(this.lattices[i-4], this.lattices[i-12].getAttribute("value"));
                                 }
                             }else {
                                 if(this.lattices[i].getAttribute("value") == this.lattices[i-8].getAttribute("value")){
                                     this.setValue(this.lattices[i], 2*this.lattices[i].getAttribute("value"));
-                                    this.setValue(this.lattices[i-4],this.lattices[i-12].getAttribute("value"));
+                                    this.setValue(this.lattices[i-4], this.lattices[i-12].getAttribute("value"));
+                                    this.setValue(this.lattices[i-8], 0);
                                 }else {
                                     if(this.lattices[i-8].getAttribute("value") == this.lattices[i-12].getAttribute("value")){
                                         this.setValue(this.lattices[i-4], 2*this.lattices[i-8].getAttribute("value"));
@@ -213,14 +221,19 @@ game2048.prototype = {
                             this.setValue(this.lattices[i-12], 0);
                         }else {
                             if(this.lattices[i].getAttribute("value") == this.lattices[i-4].getAttribute("value")){
-                                this.setValue(this.lattices[i],2*this.lattices[i].getAttribute("value"));
+                                this.setValue(this.lattices[i], 2*this.lattices[i].getAttribute("value"));
                                 this.setValue(this.lattices[i-4], 0);
                                 if(this.lattices[i-8].getAttribute("value") == this.lattices[i-12].getAttribute("value")){
-                                    this.setValue(this.lattices[i-4], 2*this.lattices[i-8].getAttribute("value"));
+                                    this.setValue(this.lattices[i-4] ,2*this.lattices[i-8].getAttribute("value"));
                                     this.setValue(this.lattices[i-8], 0);
                                 }else {
-                                    this.setValue(this.lattices[i-4], this.lattices[i-8].getAttribute("value"));
-                                    this.setValue(this.lattices[i-8], this.lattices[i-12].getAttribute("value"));
+                                    if(this.lattices[i-8].getAttribute("value") == 0){
+                                        this.setValue(this.lattices[i-4], this.lattices[i-12].getAttribute("value"));
+                                    }else{
+                                        this.setValue(this.lattices[i-4], this.lattices[i-8].getAttribute("value"));
+                                        this.setValue(this.lattices[i-8], this.lattices[i-12].getAttribute("value"));
+                                    }
+
                                 }
                                 this.setValue(this.lattices[i-12], 0);
                             }else {
@@ -233,13 +246,13 @@ game2048.prototype = {
                                     this.setValue(this.lattices[i-12], 0);
                                 }else {
                                     if(this.lattices[i-4].getAttribute("value") == this.lattices[i-8].getAttribute("value")){
-                                        this.setValue(this.lattices[i-4], 2*this.lattices[i-4].getAttribute("value"));
+                                        this.setValue(this.lattices[i-4],2*this.lattices[i-4].getAttribute("value"));
                                         this.setValue(this.lattices[i-8], this.lattices[i-12].getAttribute("value"));
                                         this.setValue(this.lattices[i-12], 0);
                                     }else {
                                         if(this.lattices[i-8].getAttribute("value") == this.lattices[i-12].getAttribute("value")){
                                             this.setValue(this.lattices[i-8], 2*this.lattices[i-8].getAttribute("value"));
-                                            this.setValue(this.lattices[i-12],  0);
+                                            this.setValue(this.lattices[i-12], 0);
                                         }
                                     }
                                 }
@@ -249,7 +262,7 @@ game2048.prototype = {
                 }
                 break;
             case 37:    //左箭头
-                for(var i=0;i<12;i=i+4){
+                for(var i=0;i<13;i=i+4){
                     if(this.lattices[i].getAttribute("value") == 0){
                         if(this.lattices[i+1].getAttribute("value") == 0){
                             if(this.lattices[i+2].getAttribute("value") == 0){
@@ -258,7 +271,7 @@ game2048.prototype = {
                             else {
                                 if(this.lattices[i+2].getAttribute("value") == this.lattices[i+3].getAttribute("value")){
                                     this.setValue(this.lattices[i], 2*this.lattices[i+2].getAttribute("value"));
-                                }else{
+                                }else {
                                     this.setValue(this.lattices[i], this.lattices[i+2].getAttribute("value"));
                                     this.setValue(this.lattices[i+1], this.lattices[i+3].getAttribute("value"));
                                 }
@@ -278,9 +291,8 @@ game2048.prototype = {
                                         this.setValue(this.lattices[i], this.lattices[i+1].getAttribute("value"));
                                         this.setValue(this.lattices[i+1],this.lattices[i+3].getAttribute("value"));
                                     }
-                                    this.setValue(this.lattices[i+2], 0);
                                 }else{
-                                    this.setValue(this.lattices[i],this.lattices[i+4].getAttribute("value"));
+                                    this.setValue(this.lattices[i],this.lattices[i+1].getAttribute("value"));
                                     if(this.lattices[i+2].getAttribute("value") == this.lattices[i+3].getAttribute("value")){
                                         this.setValue(this.lattices[i+1] , 2*this.lattices[i+3].getAttribute("value"));
                                         this.setValue(this.lattices[i+2], 0);
@@ -304,10 +316,11 @@ game2048.prototype = {
                                 if(this.lattices[i].getAttribute("value") == this.lattices[i+2].getAttribute("value")){
                                     this.setValue(this.lattices[i], 2*this.lattices[i].getAttribute("value"));
                                     this.setValue(this.lattices[i+1], this.lattices[i+3].getAttribute("value"));
+                                    this.setValue(this.lattices[i+2], 0);
                                 }else {
                                     if(this.lattices[i+2].getAttribute("value") == this.lattices[i+3].getAttribute("value")){
                                         this.setValue(this.lattices[i+1], 2*this.lattices[i+2].getAttribute("value"));
-                                        this.setValue(this.lattices[i+2], 0);
+                                        this.setValue(this.lattices[i+2],0);
                                     }else {
                                         this.setValue(this.lattices[i+1], this.lattices[i+2].getAttribute("value"));
                                         this.setValue(this.lattices[i+2], this.lattices[i+3].getAttribute("value"));
@@ -316,103 +329,108 @@ game2048.prototype = {
                             }
                             this.setValue(this.lattices[i+3], 0);
                         }else {
-                                if(this.lattices[i].getAttribute("value") == this.lattices[i+1].getAttribute("value")){
-                                    this.setValue(this.lattices[i], 2*this.lattices[i].getAttribute("value"));
-                                    this.setValue(this.lattices[i+1], 0);
-                                    if(this.lattices[i+2].getAttribute("value") == this.lattices[i+3].getAttribute("value")){
-                                        this.setValue(this.lattices[i+1] ,2*this.lattices[i+2].getAttribute("value"));
-                                        this.setValue(this.lattices[i+2], 0);
-                                    }else {
-                                        this.setValue(this.lattices[i+1], this.lattices[i+2].getAttribute("value"));
-                                        this.setValue(this.lattices[i+2], this.lattices[i+3].getAttribute("value"));
-                                    }
+                            if(this.lattices[i].getAttribute("value") == this.lattices[i+1].getAttribute("value")){
+                                this.setValue(this.lattices[i], 2*this.lattices[i].getAttribute("value"));
+                                this.setValue(this.lattices[i+1], 0);
+                                if(this.lattices[i+2].getAttribute("value") == this.lattices[i+3].getAttribute("value")){
+                                    this.setValue(this.lattices[i+1] ,2*this.lattices[i+2].getAttribute("value"));
                                     this.setValue(this.lattices[i+2], 0);
                                 }else {
                                     if(this.lattices[i+2].getAttribute("value") == 0){
-                                        if(this.lattices[i+1].getAttribute("value") == this.lattices[i+3].getAttribute("value")){
-                                            this.setValue(this.lattices[i+1], 2*this.lattices[i+1].getAttribute("value"));
-                                        }else {
-                                            this.setValue(this.lattices[i+2], this.lattices[i+3].getAttribute("value"));
-                                        }
+                                        this.setValue(this.lattices[i+1], this.lattices[i+3].getAttribute("value"));
+                                    }else{
+                                        this.setValue(this.lattices[i+1], this.lattices[i+2].getAttribute("value"));
+                                        this.setValue(this.lattices[i+2], this.lattices[i+3].getAttribute("value"));
+                                    }
+
+                                }
+                                this.setValue(this.lattices[i+3], 0);
+                            }else {
+                                if(this.lattices[i+2].getAttribute("value") == 0){
+                                    if(this.lattices[i+1].getAttribute("value") == this.lattices[i+3].getAttribute("value")){
+                                        this.setValue(this.lattices[i+1], 2*this.lattices[i+1].getAttribute("value"));
+                                    }else {
+                                        this.setValue(this.lattices[i+2], this.lattices[i+3].getAttribute("value"));
+                                    }
+                                    this.setValue(this.lattices[i+3], 0);
+                                }else {
+                                    if(this.lattices[i+1].getAttribute("value") == this.lattices[i+2].getAttribute("value")){
+                                        this.setValue(this.lattices[i+1],2*this.lattices[i+1].getAttribute("value"));
+                                        this.setValue(this.lattices[i+2], this.lattices[i+3].getAttribute("value"));
                                         this.setValue(this.lattices[i+3], 0);
                                     }else {
-                                        if(this.lattices[i+1].getAttribute("value") == this.lattices[i+2].getAttribute("value")){
-                                            this.setValue(this.lattices[i+1],2*this.lattices[i+1].getAttribute("value"));
-                                            this.setValue(this.lattices[i+2], this.lattices[i+3].getAttribute("value"));
+                                        if(this.lattices[i+2].getAttribute("value") == this.lattices[i+3].getAttribute("value")){
+                                            this.setValue(this.lattices[i+2], 2*this.lattices[i+2].getAttribute("value"));
                                             this.setValue(this.lattices[i+3], 0);
-                                        }else {
-                                            if(this.lattices[i+2].getAttribute("value") == this.lattices[i+3].getAttribute("value")){
-                                                this.setValue(this.lattices[i+2], 2*this.lattices[i+2].getAttribute("value"));
-                                                this.lsetValue(this.lattices[i+3], 0);
-                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
+                }
                 break;
             case 39:    //右箭头
-                for(var i=3;i<15;i=i+4){
+                for(var i=3;i<16;i=i+4){
                     if(this.lattices[i].getAttribute("value") == 0){
                         if(this.lattices[i-1].getAttribute("value") == 0){
-                        if(this.lattices[i-2].getAttribute("value") == 0){
-                            this.setValue(this.lattices[i], this.lattices[i-3].getAttribute("value")) ;
-                        }
-                        else {
-                            if(this.lattices[i-2].getAttribute("value") == this.lattices[i-3].getAttribute("value")){
-                                this.setValue(this.lattices[i], 2*this.lattices[i-2].getAttribute("value"));
-                            }else{
-                                this.setValue(this.lattices[i], this.lattices[i-2].getAttribute("value"));
-                                this.setValue(this.lattices[i-1], this.lattices[i-3].getAttribute("value"));
-                            }
-                            this.setValue(this.lattices[i-2], 0);
-                        }
-                    }else {
-                        if(this.lattices[i-1].getAttribute("value") == this.lattices[i-2].getAttribute("value")){
-                            this.setValue(this.lattices[i],2*this.lattices[i-1].getAttribute("value"));
-                            this.setValue(this.lattices[i-1],this.lattices[i-3].getAttribute("value"));
-                            this.setValue(this.lattices[i-2], 0);
-                        }else{
                             if(this.lattices[i-2].getAttribute("value") == 0){
-                                if(this.lattices[i-1].getAttribute("value") == this.lattices[i-3].getAttribute("value")){
-                                    this.setValue(this.lattices[i],  2*this.lattices[i-1].getAttribute("value"));
-                                    this.setValue(this.lattices[i-1], 0);
-                                }else{
-                                    this.setValue(this.lattices[i], this.lattices[i-1].getAttribute("value"));
-                                    this.setValue(this.lattices[i-1],this.lattices[i-3].getAttribute("value"));
+                                this.setValue(this.lattices[i], this.lattices[i-3].getAttribute("value")) ;
+                            }
+                            else {
+                                if(this.lattices[i-2].getAttribute("value") == this.lattices[i-3].getAttribute("value")){
+                                    this.setValue(this.lattices[i], 2*this.lattices[i-2].getAttribute("value"));
+                                }else {
+                                    this.setValue(this.lattices[i], this.lattices[i-2].getAttribute("value"));
+                                    this.setValue(this.lattices[i-1], this.lattices[i-3].getAttribute("value"));
                                 }
                                 this.setValue(this.lattices[i-2], 0);
+                            }
+                        }else {
+                            if(this.lattices[i-1].getAttribute("value") == this.lattices[i-2].getAttribute("value")){
+                                this.setValue(this.lattices[i],2*this.lattices[i-1].getAttribute("value"));
+                                this.setValue(this.lattices[i-1],this.lattices[i-3].getAttribute("value"));
+                                this.setValue(this.lattices[i-2], 0);
                             }else{
-                                this.setValue(this.lattices[i],this.lattices[i-4].getAttribute("value"));
-                                if(this.lattices[i-2].getAttribute("value") == this.lattices[i-3].getAttribute("value")){
-                                    this.setValue(this.lattices[i-1] , 2*this.lattices[i-3].getAttribute("value"));
-                                    this.setValue(this.lattices[i-2], 0);
-                                }else {
-                                    this.setValue(this.lattices[i-1],this.lattices[i-2].getAttribute("value"));
-                                    this.setValue(this.lattices[i-2] , this.lattices[i-3].getAttribute("value"));
+                                if(this.lattices[i-2].getAttribute("value") == 0){
+                                    if(this.lattices[i-1].getAttribute("value") == this.lattices[i-3].getAttribute("value")){
+                                        this.setValue(this.lattices[i],  2*this.lattices[i-1].getAttribute("value"));
+                                        this.setValue(this.lattices[i-1], 0);
+                                    }else{
+                                        this.setValue(this.lattices[i], this.lattices[i-1].getAttribute("value"));
+                                        this.setValue(this.lattices[i-1],this.lattices[i-3].getAttribute("value"));
+                                    }
+                                }else{
+                                    this.setValue(this.lattices[i],this.lattices[i-1].getAttribute("value"));
+                                    if(this.lattices[i-2].getAttribute("value") == this.lattices[i-3].getAttribute("value")){
+                                        this.setValue(this.lattices[i-1] , 2*this.lattices[i-3].getAttribute("value"));
+                                        this.setValue(this.lattices[i-2], 0);
+                                    }else {
+                                        this.setValue(this.lattices[i-1],this.lattices[i-2].getAttribute("value"));
+                                        this.setValue(this.lattices[i-2] , this.lattices[i-3].getAttribute("value"));
+                                    }
                                 }
                             }
                         }
-                    }
-                    this.setValue(this.lattices[i-3],0);
+                        this.setValue(this.lattices[i-3],0);
                     }else {
                         if(this.lattices[i-1].getAttribute("value") == 0){
                             if(this.lattices[i-2].getAttribute("value") == 0){
-                        if(this.lattices[i].getAttribute("value") == this.lattices[i-3].getAttribute("value")){
-                            this.setValue(this.lattices[i],2*this.lattices[i].getAttribute("value"));
-                        }else{
-                            this.setValue(this.lattices[i-1], this.lattices[i-3].getAttribute("value"));
-                        }
-                    }else {
-                                if(this.lattices[i].getAttribute("value") == this.lattices[i-2].getAttribute("value")){
-                            this.setValue(this.lattices[i], 2*this.lattices[i].getAttribute("value"));
-                            this.setValue(this.lattices[i+1], this.lattices[i+3].getAttribute("value"));
-                        }else {
-                                    if(this.lattices[i-2].getAttribute("value") == this.lattices[i-3].getAttribute("value")){
-                                this.setValue(this.lattices[i-1], 2*this.lattices[i-2].getAttribute("value"));
-                                this.setValue(this.lattices[i-2], 0);
+                                if(this.lattices[i].getAttribute("value") == this.lattices[i-3].getAttribute("value")){
+                                    this.setValue(this.lattices[i],2*this.lattices[i].getAttribute("value"));
+                                }else{
+                                    this.setValue(this.lattices[i-1], this.lattices[i-3].getAttribute("value"));
+                                }
                             }else {
+                                if(this.lattices[i].getAttribute("value") == this.lattices[i-2].getAttribute("value")){
+                                    this.setValue(this.lattices[i], 2*this.lattices[i].getAttribute("value"));
+                                    this.setValue(this.lattices[i-1], this.lattices[i-3].getAttribute("value"));
+                                    this.setValue(this.lattices[i-2], 0);
+                                }else {
+                                    if(this.lattices[i-2].getAttribute("value") == this.lattices[i-3].getAttribute("value")){
+                                        this.setValue(this.lattices[i-1], 2*this.lattices[i-2].getAttribute("value"));
+                                        this.setValue(this.lattices[i-2],0);
+                                    }else {
                                         this.setValue(this.lattices[i-1], this.lattices[i-2].getAttribute("value"));
                                         this.setValue(this.lattices[i-2], this.lattices[i-3].getAttribute("value"));
                                     }
@@ -427,10 +445,15 @@ game2048.prototype = {
                                     this.setValue(this.lattices[i-1] ,2*this.lattices[i-2].getAttribute("value"));
                                     this.setValue(this.lattices[i-2], 0);
                                 }else {
-                                    this.setValue(this.lattices[i-1], this.lattices[i-2].getAttribute("value"));
-                                    this.setValue(this.lattices[i-2], this.lattices[i-3].getAttribute("value"));
+                                    if(this.lattices[i-2].getAttribute("value") == 0){
+                                        this.setValue(this.lattices[i-1], this.lattices[i-3].getAttribute("value"));
+                                    }else{
+                                        this.setValue(this.lattices[i-1], this.lattices[i-2].getAttribute("value"));
+                                        this.setValue(this.lattices[i-2], this.lattices[i-3].getAttribute("value"));
+                                    }
+
                                 }
-                                this.setValue(this.lattices[i-2], 0);
+                                this.setValue(this.lattices[i-3], 0);
                             }else {
                                 if(this.lattices[i-2].getAttribute("value") == 0){
                                     if(this.lattices[i-1].getAttribute("value") == this.lattices[i-3].getAttribute("value")){
@@ -456,9 +479,10 @@ game2048.prototype = {
                     }
                 }
                 break;
-            }
-    this.randomLattice();
-    }
+        }
+        this.randomLattice();
+    },
+
 };
 
 
